@@ -1,9 +1,10 @@
 import { useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
-import { KeyRound, LogOut, ChevronDown, Bell, BellOff, Loader2 } from 'lucide-react'
+import { KeyRound, LogOut, ChevronDown, Bell, BellOff, Loader2, Download } from 'lucide-react'
 import { useAuth } from '../context/AuthContext'
 import { pushApi } from '../api/push'
+import { promptInstall, showInstall, useInstall } from '../utils/install'
 import { isPushSupported, getCurrentSubscription, enablePushNotifications, disablePushNotifications } from '../utils/push'
 
 export default function UserMenu() {
@@ -13,6 +14,7 @@ export default function UserMenu() {
   const [pushEnabled, setPushEnabled] = useState(false)
   // Push only exists once the server has VAPID keys configured.
   const [pushAvailable, setPushAvailable] = useState(false)
+  const { mode: installMode } = useInstall()
   const [pushBusy, setPushBusy] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
 
@@ -93,6 +95,18 @@ export default function UserMenu() {
               >
                 {pushBusy ? <Loader2 className="w-4 h-4 animate-spin" /> : pushEnabled ? <BellOff className="w-4 h-4" /> : <Bell className="w-4 h-4" />}
                 {pushEnabled ? 'Disable notifications' : 'Enable notifications'}
+              </button>
+            )}
+            {(installMode === 'prompt' || installMode === 'ios' || installMode === 'manual') && (
+              <button
+                onClick={() => {
+                  setOpen(false)
+                  if (installMode === 'prompt') promptInstall()
+                  else showInstall() // shows the how-to card again
+                }}
+                className="w-full flex items-center gap-2.5 px-3.5 py-2.5 text-sm text-navy-900 hover:bg-navy-50 transition-colors"
+              >
+                <Download className="w-4 h-4" /> Install app
               </button>
             )}
             <button

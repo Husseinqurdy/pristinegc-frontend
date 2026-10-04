@@ -1,3 +1,4 @@
+import { clearSession } from '../utils/session'
 import { createContext, useCallback, useContext, useEffect, useState, type ReactNode } from 'react'
 import api from '../api/client'
 
@@ -45,7 +46,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }
 
   const logout = useCallback(() => {
-    localStorage.clear()
+    clearSession()
     setUser(null)
   }, [])
 

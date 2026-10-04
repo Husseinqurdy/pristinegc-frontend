@@ -3,6 +3,7 @@ import { AuthProvider, useAuth } from './context/AuthContext'
 import ProtectedRoute from './components/ProtectedRoute'
 import DashboardShell from './components/DashboardShell'
 import IdleGuard from './components/IdleGuard'
+import InstallBanner from './components/InstallBanner'
 
 import Login from './pages/Login'
 import ForgotPassword from './pages/ForgotPassword'
@@ -28,6 +29,7 @@ export default function App() {
     <BrowserRouter>
       <AuthProvider>
         <IdleGuard />
+        <InstallBanner />
         <Routes>
           <Route path="/" element={<RootRedirect />} />
           <Route path="/login" element={<Login />} />

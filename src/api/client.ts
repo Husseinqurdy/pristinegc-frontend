@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { clearSession } from '../utils/session'
 
 export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://gc.simunexus.com/api'
 
@@ -13,7 +14,7 @@ api.interceptors.request.use((config) => {
 function forceLogout() {
   // Only the session is cleared. Entries saved offline live in IndexedDB and
   // stay on the device until that same user signs in again and they sync.
-  localStorage.clear()
+  clearSession()
   window.location.href = '/login'
 }
 
